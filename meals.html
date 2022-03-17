@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Meals with Lemon</h1>
+    </header>
+    <div id="meals-api"></div>
+
+</body>
+
+<script>
+    fetch("https://www.themealdb.com/api/json/v1/1/filter.php?i=lemon") 
+	.then((response) => response.json())
+    .then((data) => {
+          console.log(data);
+          const meals = data.meals;
+          for (let i = 0; i < meals.length; i++) {
+            let newMeal = document.createElement('div');
+            newMeal.classList.add('meal');
+
+            let text = document.createElement('p');
+            text.src = meals[i].strMeal;
+            JSON.stringify(text);
+            console.log(text);
+
+            newMeal.appendChild(text);
+
+            let image = document.createElement('IMG');
+            image.src = meals[i].strMealThumb;
+
+            newMeal.appendChild(image);
+
+            document.getElementById('meals-api').append(newMeal);
+          }
+        })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+
+    
+</script>
+</html>
