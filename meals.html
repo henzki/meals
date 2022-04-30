@@ -1,45 +1,59 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <header>
-        <h1>Meals with Lemon</h1>
-    </header>
-    <div id="meals-api"></div>
+    <div class="top">
+        <h1>Meals Api</h1>
+        <p>Here you can search meals by their ingredients, for example 'tomato'. <br>Otherwise just click 'Find' and all meals will appear.</p>
+        <label for="myText">Place an ingredient:</label>
+        <input type="text" id="myText">
+        <button type="button" onClick="getRepositories()">Find</button>
+        <button onClick="window.location.reload();"><img src="refresh.png" width="20px" height="20px"></button>
+    </div>
+    <div class="meals" id="meals-api"></div>
 
 </body>
 
 <script>
-    fetch("https://www.themealdb.com/api/json/v1/1/filter.php?i=lemon") 
-	.then((response) => response.json())
-    .then((data) => {
-          console.log(data);
-          const meals = data.meals;
-          for (let i = 0; i < meals.length; i++) {
-            let newMeal = document.createElement('div');
-            newMeal.classList.add('meal');
 
-            let text = document.createElement('p');
-            text.src = meals[i].strMeal;
-            JSON.stringify(text);
-            console.log(text);
+    function getRepositories() {
+        var x = document.getElementById("myText").value;
+        fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${x}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                const meals = data.meals;
+                for (let i = 0; i < meals.length; i++) {
+                    let newMeal = document.createElement('div');
+                    newMeal.classList.add('meal');
 
-            newMeal.appendChild(text);
+                    let image = document.createElement('IMG');
+                    image.src = meals[i].strMealThumb;
 
-            let image = document.createElement('IMG');
-            image.src = meals[i].strMealThumb;
+                    newMeal.appendChild(image);
 
-            newMeal.appendChild(image);
+                    let newName = document.createElement('div');
+                    newName.classList.add('name');
 
-            document.getElementById('meals-api').append(newMeal);
-          }
-        })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+                    let name = document.createElement("div");
+                    name.innerHTML = meals[i].strMeal;
 
-    
+                    newName.appendChild(name);
+
+                    document.getElementById('meals-api').append(newName, newMeal);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+    }
+
+
 </script>
+
 </html>
